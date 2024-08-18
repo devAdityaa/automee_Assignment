@@ -1,0 +1,17 @@
+{
+  "name": "automee_assignment",
+  "version": "1.0.0",
+  "description": "A script that reads a pdf and matches it with a set of requirements using chat gpt api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chatgpt",
+    "ai",
+    "pdf",
+    "automee"
+  ],
+  "author": "debaditya banerji",
+  "license": "ISC"
+}
