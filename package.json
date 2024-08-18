@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "keywords": [
     "chatgpt",
     "ai",
@@ -13,5 +14,10 @@
     "automee"
   ],
   "author": "debaditya banerji",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pdf2pic": "^3.1.1",
+    "pdfjs-dist": "^4.5.136",
+    "sharp": "^0.33.5"
+  }
 }
