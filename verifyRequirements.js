@@ -19,11 +19,14 @@ async function processPdfAndEvaluate(pdfPath, outputDir, processId, requirements
         // Convert the PDF into serialized images with a page number
         await processPdf(pdfPath, outputDir, processId);
 
-        // Send the images to OpenAI for processing
+        // Create Base64 Image encodings for the pdf images
         const imageContents = await generateImageContents(processId, outputDir, numImages);
         console.log("PDF Images along with system prompt and requirements sent to GPT API for processing...")
+
+        //send the image encodings along with the prompt and requirements to Openai API
         const response = await getCompletion(imageContents, requirements);
 
+        //Extract the returned JSON Object
         const jsonObject = extractJsonFromResponse(response);
         console.log(jsonObject)
 
