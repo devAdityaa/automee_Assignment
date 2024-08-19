@@ -35,7 +35,6 @@ async function convertToImages(pdfPath, width, height, outputDir, pageNumber, id
     try {
         const imageInfo = await convert(pageNumber, { responseType: "image" });
         const imagePath = imageInfo.path;
-        console.log(`Page ${pageNumber} is now converted as image: ${imagePath}`);
         await addFooterToImage(imagePath, pageNumber);
     } catch (err) {
         console.error(`Error converting page ${pageNumber} to image:`, err);
@@ -73,8 +72,6 @@ async function addFooterToImage(imagePath, pageNumber) {
             { input: footerBuffer, top: height, left: 0 }
         ])
         .toFile(imagePath);
-
-        console.log(`Footer added to page ${pageNumber}.`);
     } catch (error) {
         console.error('Error adding footer to image:', error);
     }
@@ -87,7 +84,7 @@ export async function processPdf(pdfPath, outputDir, id) {
             fs.mkdirSync(outputDir, { recursive: true });
         }
         await convertPdfToImagesWithFooter(pdfPath, outputDir, id);
-        console.log('Processing completed.');
+        console.log('PDF pages converted to images and a footer is added with the page number...');
     } catch (error) {
         console.error('Error during processing:', error);
     }
