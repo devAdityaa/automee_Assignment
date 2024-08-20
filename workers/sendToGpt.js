@@ -53,7 +53,7 @@ async function getCompletion(contents, requirements) {
         if (requirements.riskyWords) requirementsText += `Risky Words: ${requirements.riskyWords}\n`;
 
         const response = await openai.chat.completions.create({
-            model: 'gpt-4o-mini',
+            model: 'gpt-4o',
             messages: [
                 {
                     role: 'user',
