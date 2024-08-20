@@ -1,5 +1,5 @@
 
-# PDF Requirement Checker AI
+# PDF Compliance Checker AI
 ## Automee Assignment
 This project focuses on automating the verification of PDF documents against specific requirements using advanced AI capabilities. The process begins by converting each page of the PDF into an image format. These images are then passed, along with the prompt, to the OpenAI GPT-4 model through the API for evaluation. The final output is a JSON Object.
 
