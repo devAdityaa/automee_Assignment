@@ -11,6 +11,9 @@ This automated solution streamlines the process of document compliance checks, m
 Clone the repository:
 ```bash
 git clone https://github.com/devAdityaa/automee_Assignment.git
+```
+Go to the project directory:
+```bash
 cd automee_Assignment
 ```
 Install the requirements:
