@@ -1,4 +1,3 @@
 node_modules
 pdfImages/*.png
-source/*.pdf
 .env
