@@ -6,12 +6,16 @@ import { map } from 'async';
 
 // Function to convert PDF page to image with footer
 async function convertPdfToImagesWithFooter(pdfPath, outputDir, id) {
+    //convert the pdf into an array of 8-bit unsigned integer
     const data = new Uint8Array(fs.readFileSync(pdfPath));
+    //get the pdf document object using pdfjs
     const pdfDocument = await pdfjsLib.getDocument({ data }).promise;
     const numPages = pdfDocument.numPages;
 
     const pageNumbers = Array.from({ length: numPages }, (_, i) => i + 1);
     
+
+    //process each page number and convert to images in parallel using map method from async package
     await map(pageNumbers, async (pageNumber) => {
         const page = await pdfDocument.getPage(pageNumber);
         const viewport = page.getViewport({ scale: 2 });
@@ -22,7 +26,7 @@ async function convertPdfToImagesWithFooter(pdfPath, outputDir, id) {
 // Convert PDF page to image and save it with footer
 async function convertToImages(pdfPath, width, height, outputDir, pageNumber, id) {
     const options = {
-        density: 100,
+        density: 100, //quality DPI
         saveFilename: id,
         savePath: outputDir,
         format: "png",
@@ -56,17 +60,19 @@ async function addFooterToImage(imagePath, pageNumber) {
                     Page ${pageNumber}
                 </text>
             </svg>`;
-
+        //convert svg into a buffer of raw binary representation
         const footerBuffer = Buffer.from(footerSvg);
 
+        //create new image from the footer
         await sharp({
             create: {
                 width: width,
                 height: canvasHeight,
                 channels: 4,
-                background: { r: 255, g: 255, b: 255, alpha: 0 }
+                background: { r: 255, g: 255, b: 255, alpha: 0 } //transparent
             }
         })
+        //overlaying
         .composite([
             { input: await image.toBuffer() },
             { input: footerBuffer, top: height, left: 0 }

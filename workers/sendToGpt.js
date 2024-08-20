@@ -15,6 +15,7 @@ async function encodeImage(imagePath) {
         return image.toString('base64');
     } catch (error) {
         console.error(`Error encoding image at ${imagePath}:`, error);
+        return '';
     }
 }
 
@@ -35,6 +36,7 @@ async function generateImageContents(id, dirPath, count) {
         return contents;
     } catch (error) {
         console.error('Error generating image contents:', error);
+        return []
     }
 }
 
@@ -51,7 +53,7 @@ async function getCompletion(contents, requirements) {
         if (requirements.riskyWords) requirementsText += `Risky Words: ${requirements.riskyWords}\n`;
 
         const response = await openai.chat.completions.create({
-            model: 'gpt-4o',
+            model: 'gpt-4o-mini',
             messages: [
                 {
                     role: 'user',
