@@ -16,9 +16,12 @@
   "author": "debaditya banerji",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.5",
+    "dotenv": "^16.4.5",
     "openai": "^4.56.0",
     "pdf2pic": "^3.1.1",
     "pdfjs-dist": "^4.5.136",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "uuid": "^10.0.0"
   }
 }

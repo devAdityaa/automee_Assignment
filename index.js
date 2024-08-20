@@ -1,26 +1,38 @@
-import { processPdf } from './workers/convertToImages.js';
-import { extractTextAndFontSize } from './workers/textExtractor.js';
-import { generateImageContents, getCompletion } from './workers/sendToGpt.js';
+import fs from 'fs';
+import { processPdfAndEvaluate } from './verifyRequirements.js';
+import * as pdfjsLib from 'pdfjs-dist/build/pdf.min.mjs';
+import { v4 as uuidv4 } from 'uuid';
+import dotenv from 'dotenv';
+dotenv.config();
+
+// Configuration
 const pdfPath = '/Users/debadityabanerji/Desktop/Projects/Personal Projects/pdfRequirement/automee_Assignment/source/verify.pdf';
 const outputDir = '/Users/debadityabanerji/Desktop/Projects/Personal Projects/pdfRequirement/automee_Assignment/pdfImages';
-
-// extractTextAndFontSize(pdfPath).catch(error => {
-//     console.error('Error:', error);
-// });
-
-// processPdf(pdfPath, outputDir)
+const processId = uuidv4();
 const requirements = {
-    sectionRequirement: "Ensure that whenever a chart or table is provided showing some data, that the name of information source has been stated.",
-    locator: "Locate the name of the information source immediately after or below the chart or table.",
-    fontColor: "The font colour for this wording must be black or blackish or gray.",
-    fontType: "The font type for this wording must be the standard font type used in the rest of the content.",
-    fontSize: "The font size for this wording must be no smaller than the standard font size used in the rest of the content.",
-    sys: "At least 2 of the 3 charts match this requirement."
+    type: process.env.TYPE, 
+    sectionRequirement: process.env.SECTION_REQUIREMENT, 
+    locator: process.env.LOCATOR,
+    fontType: process.env.FONT_TYPE,
+    fontSize: process.env.FONT_SIZE,
+    fontColor: process.env.FONT_COLOR,
+    additionalNotes: process.env.ADDITIONAL_NOTES,
+    riskyWords: process.env.RISKY_WORDS
 };
 
-const imageContents = generateImageContents(outputDir)
-getCompletion(imageContents, requirements)
-.then(response=>{
-    console.log(response)
-})
+async function main() {
+    try {
+        const data = new Uint8Array(fs.readFileSync(pdfPath));
+        const pdfDocument = await pdfjsLib.getDocument({ data }).promise;
 
+        const numImages = pdfDocument.numPages;
+        console.log("Pages", numImages);
+
+        await processPdfAndEvaluate(pdfPath, outputDir, processId, requirements, numImages);
+        console.log('PDF processed and evaluated successfully.');
+    } catch (error) {
+        console.error('Error processing PDF:', error);
+    }
+}
+
+main();
